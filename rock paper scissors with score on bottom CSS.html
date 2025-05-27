@@ -1,0 +1,109 @@
+<html>
+    <title>RockPaperScissors game</title>
+    <body>
+        <style>
+            body{
+                background-color: black;
+                color: white;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 20px;
+            }
+            .heading{
+                font-family: "Old English Text MT", "Blackletter", "Gothic", serif;
+                font-size: 40px;
+            }
+            .bs{
+                    border: white;
+                    background: transparent;
+                    padding: 0;
+                    margin: 10px;
+                    cursor: pointer;
+            }
+            .se{
+                font-weight: bold;
+            }
+        </style>
+
+        <script>
+            
+        let score=JSON.parse(localStorage.getItem('score')) ||{
+            wins: 0,
+            loss: 0,
+            draws: 0
+        }
+            
+            let ch=0;
+            function clearscore(){
+                score.wins=0;
+                score.loss=0;
+                score.draws=0;
+                localStorage.removeItem('score')
+                buttonelement=document.querySelector('.js-button')
+                scoreElement=document.querySelector('.js-score')
+                wldElement=document.querySelector('.wld')
+                scElement=document.querySelector('.showchoice')
+                scoreElement.innerText=' '
+                wldElement.innerText=' '
+                scElement.innerText=' '
+                buttonelement.innerText="Cleared"
+            }
+            function check() {
+                    const scoreElement = document.querySelector('.js-score');
+                    const wldElement = document.querySelector('.wld');
+                    const buttonelement = document.querySelector('.js-button');
+                    const scElement = document.querySelector('.showchoice');
+
+                    const comp = Math.floor(Math.random() * 3) + 1;
+
+                    let playerChoice = '';
+                    let compChoice = '';
+
+                    // Determine player choice image
+                    if (ch === 1) playerChoice = 'rock-emoji';
+                    else if (ch === 2) playerChoice = 'paper-emoji';
+                    else if (ch === 3) playerChoice = 'scissors-emoji';
+
+                    // Determine computer choice image
+                    if (comp === 1) compChoice = 'rock-emoji';
+                    else if (comp === 2) compChoice = 'paper-emoji';
+                    else if (comp === 3) compChoice = 'scissors-emoji';
+
+                    // Game logic
+                    if (ch === comp) {
+                        score.draws++;
+                        scoreElement.innerText = `Congrats, it's a draw.\nKing Jhofred will take revenge for sure`;
+                    } else if (
+                        (ch === 1 && comp === 3) ||
+                        (ch === 2 && comp === 1) ||
+                        (ch === 3 && comp === 2)
+                    ) {
+                        score.wins++;
+                        scoreElement.innerText = `You Win!!`;
+                    } else {
+                        score.loss++;
+                        scoreElement.innerText = `Jhofred Won!!`;
+                    }
+
+                    localStorage.setItem('score', JSON.stringify(score));
+
+                    if (buttonelement.innerText === 'Cleared') {
+                        buttonelement.innerText = 'Clear Score';
+                    }
+
+                    wldElement.innerText = `Wins: ${score.wins}, Loss: ${score.loss}, Draws: ${score.draws}`;
+
+                    scElement.innerHTML = `You <img src="${playerChoice}.jpg"> vs Jhofred <img src="${compChoice}.jpg">`;
+                }
+
+        </script>
+        <p class="heading"><b>Play with Jhofred</b></p>
+        <p>Select one of the follows. Jhofred is Your opponent. Let King Jhofred Smile Bring Justice</p>
+        <button class="bs" onclick="ch=1;check()"><img src="rock-emoji.jpg"></button>
+        <button class="bs"  onclick="ch=2;check()"><img src="paper-emoji.jpg"></button>
+        <button class="bs"  onclick="ch=3;check()"><img src="scissors-emoji.jpg"></button>
+        <p class='js-score se'></p>
+        <p class="showchoice"></p>
+        <p class='wld'></p>
+        <button class='js-button' onclick="clearscore()">Clear Score</button>
+        </body>
+</html>
