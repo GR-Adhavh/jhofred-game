@@ -22,6 +22,16 @@
             .se{
                 font-weight: bold;
             }
+
+            .apb,.sb{
+                background: white;
+                border: none;
+                font-size: 20px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
         </style>
 
         <script>
@@ -31,6 +41,8 @@
             loss: 0,
             draws: 0
         }
+        let isAutoplay=false
+        let IntervalId;
             
             let ch=0;
             function clearscore(){
@@ -58,17 +70,14 @@
                     let playerChoice = '';
                     let compChoice = '';
 
-                    // Determine player choice image
                     if (ch === 1) playerChoice = 'rock-emoji';
                     else if (ch === 2) playerChoice = 'paper-emoji';
                     else if (ch === 3) playerChoice = 'scissors-emoji';
 
-                    // Determine computer choice image
                     if (comp === 1) compChoice = 'rock-emoji';
                     else if (comp === 2) compChoice = 'paper-emoji';
                     else if (comp === 3) compChoice = 'scissors-emoji';
 
-                    // Game logic
                     if (ch === comp) {
                         score.draws++;
                         scoreElement.innerText = `Congrats, it's a draw.\nKing Jhofred will take revenge for sure`;
@@ -95,6 +104,66 @@
                     scElement.innerHTML = `You <img src="${playerChoice}.jpg"> vs Jhofred <img src="${compChoice}.jpg">`;
                 }
 
+        function Autoplay(){
+            ButtonElement=document.querySelector('.js-ap');
+            function playrandom() {
+                const scoreElement = document.querySelector('.js-score');
+                const wldElement = document.querySelector('.wld');
+                const buttonelement = document.querySelector('.js-button');
+                const scElement = document.querySelector('.showchoice');
+                const comp1 = Math.floor(Math.random() * 3) + 1;
+                const comp2 = Math.floor(Math.random() * 3) + 1;
+
+                let Autochoice1 = '';
+                let Autochoice2 = '';
+
+                if (comp2 === 1) Autochoice1 = 'rock-emoji';
+                else if (comp2 === 2) Autochoice1 = 'paper-emoji';
+                else if (comp2 === 3) Autochoice1 = 'scissors-emoji';
+
+                if (comp1 === 1) Autochoice2 = 'rock-emoji';
+                else if (comp1 === 2) Autochoice2 = 'paper-emoji';
+                else if (comp1 === 3) Autochoice2 = 'scissors-emoji';
+
+                if (comp1 === comp2) {
+                    score.draws++;
+                    scoreElement.innerText = `Congrats, it's a draw.\nKing Jhofred will take revenge for sure`;
+                } else if (
+                    (comp1 === 1 && comp2 === 3) ||
+                    (comp1 === 2 && comp2 === 1) ||
+                    (comp1 === 3 && comp2 === 2)
+                ) {
+                    score.wins++;
+                    scoreElement.innerText = `You Win!!`;
+                } else {
+                    score.loss++;
+                    scoreElement.innerText = `Jhofred Won!!`;
+                }
+
+                localStorage.setItem('score', JSON.stringify(score));
+
+                if (buttonelement.innerText === 'Cleared') {
+                    buttonelement.innerText = 'Clear Score';
+                }
+
+                wldElement.innerText = `Wins: ${score.wins}, Loss: ${score.loss}, Draws: ${score.draws}`;
+
+                scElement.innerHTML = `You <img src="${Autochoice1}.jpg"> vs Jhofred <img src="${Autochoice2}.jpg">`;
+            }
+
+
+            if (!isAutoplay){
+                IntervalId=setInterval(playrandom,1000)
+                isAutoplay=true;
+                ButtonElement.innerText="Stop AutoPlay"
+            }
+            else{
+                clearInterval(IntervalId)
+                isAutoplay=false;
+                ButtonElement.innerText="AutoPlay"
+            }
+        }
+
         </script>
         <p class="heading"><b>Play with Jhofred</b></p>
         <p>Select one of the follows. Jhofred is Your opponent. Let King Jhofred Smile Bring Justice</p>
@@ -104,6 +173,7 @@
         <p class='js-score se'></p>
         <p class="showchoice"></p>
         <p class='wld'></p>
-        <button class='js-button' onclick="clearscore()">Clear Score</button>
+        <button class='js-button sb' onclick="clearscore()">Clear Score</button>
+        <button class='js-ap apb' onclick="Autoplay()">AutoPlay</button>
         </body>
 </html>
