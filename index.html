@@ -166,6 +166,16 @@
 
         document.body.addEventListener('keydown',(event)=>{
             const x= event.key
+            if (x=='r') ch=1;
+            else if (x=='p') ch=2;
+            else if (x=='s') ch=3;
+            else if (x=='c'){
+                clearscore();
+                return;
+            }
+            else{
+                return;
+            }
             const scoreElement = document.querySelector('.js-score');
             const wldElement = document.querySelector('.wld');
             const buttonelement = document.querySelector('.js-button');
@@ -176,9 +186,9 @@
             let playerChoice = '';
             let compChoice = '';
 
-            if (x=='r') playerChoice = 'rock-emoji';
-            else if (x=='p') playerChoice = 'paper-emoji';
-            else if (x=='s') playerChoice = 'scissors-emoji';
+            if (ch === 1) playerChoice = 'rock-emoji';
+            else if (ch === 2) playerChoice = 'paper-emoji';
+            else if (ch === 3) playerChoice = 'scissors-emoji';
 
             if (comp === 1) compChoice = 'rock-emoji';
             else if (comp === 2) compChoice = 'paper-emoji';
@@ -211,8 +221,10 @@
         })
 
         </script>
-        <p class="heading"><b>Play with Jhofred</b></p>
+        <p class="heading"><b>Play with Jhofred 2.0</b></p>
         <p>Select one of the follows. Jhofred is Your opponent. Let King Jhofred Smile Bring Justice</p>
+        <p>Game updated! You can now use r->rock,p->paper,s->Scissors,c->Clear score</p>
+        <p>Have a break without using your mouse!</p>
         <button class="bs" onclick="ch=1;check()"><img src="rock-emoji.jpg"></button>
         <button class="bs"  onclick="ch=2;check()"><img src="paper-emoji.jpg"></button>
         <button class="bs"  onclick="ch=3;check()"><img src="scissors-emoji.jpg"></button>
