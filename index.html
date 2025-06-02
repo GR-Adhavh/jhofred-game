@@ -164,6 +164,52 @@
             }
         }
 
+        document.body.addEventListener('keydown',(event)=>{
+            const x= event.key
+            const scoreElement = document.querySelector('.js-score');
+            const wldElement = document.querySelector('.wld');
+            const buttonelement = document.querySelector('.js-button');
+            const scElement = document.querySelector('.showchoice');
+
+            const comp = Math.floor(Math.random() * 3) + 1;
+
+            let playerChoice = '';
+            let compChoice = '';
+
+            if (x=='r') playerChoice = 'rock-emoji';
+            else if (x=='p') playerChoice = 'paper-emoji';
+            else if (x=='s') playerChoice = 'scissors-emoji';
+
+            if (comp === 1) compChoice = 'rock-emoji';
+            else if (comp === 2) compChoice = 'paper-emoji';
+            else if (comp === 3) compChoice = 'scissors-emoji';
+
+            if (ch === comp) {
+                score.draws++;
+                scoreElement.innerText = `Congrats, it's a draw.\nKing Jhofred will take revenge for sure`;
+            } else if (
+                (ch === 1 && comp === 3) ||
+                (ch === 2 && comp === 1) ||
+                (ch === 3 && comp === 2)
+            ) {
+                score.wins++;
+                scoreElement.innerText = `You Win!!`;
+            } else {
+                score.loss++;
+                scoreElement.innerText = `Jhofred Won!!`;
+            }
+
+            localStorage.setItem('score', JSON.stringify(score));
+
+            if (buttonelement.innerText === 'Cleared') {
+                buttonelement.innerText = 'Clear Score';
+            }
+
+            wldElement.innerText = `Wins: ${score.wins}, Loss: ${score.loss}, Draws: ${score.draws}`;
+
+            scElement.innerHTML = `You <img src="${playerChoice}.jpg"> vs Jhofred <img src="${compChoice}.jpg">`;
+        })
+
         </script>
         <p class="heading"><b>Play with Jhofred</b></p>
         <p>Select one of the follows. Jhofred is Your opponent. Let King Jhofred Smile Bring Justice</p>
